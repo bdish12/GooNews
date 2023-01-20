@@ -9,8 +9,6 @@ import android.webkit.WebView;
 
 public class WebpageActivity extends AppCompatActivity {
 
-    private WebView webView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +19,7 @@ public class WebpageActivity extends AppCompatActivity {
         getSupportActionBar().hide(); // hide title bar
         setContentView(R.layout.activity_webpage);
 
-        webView = findViewById(R.id.webView);
+        WebView webView = findViewById(R.id.webView);
         String url = getIntent().getStringExtra("url");
         webView.loadUrl(url);
     }

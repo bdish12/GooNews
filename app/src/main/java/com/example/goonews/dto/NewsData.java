@@ -1,6 +1,4 @@
-package com.example.goonews;
-
-import android.widget.ImageView;
+package com.example.goonews.dto;
 
 public class NewsData {
 
@@ -8,18 +6,15 @@ public class NewsData {
     private final String description;
     private final String url;
     private final String urlToImage;
-    private final ImageView imageView;
 
     public NewsData(String title,
                     String description,
                     String url,
-                    String urlToImage,
-                    ImageView imageView) {
+                    String urlToImage) {
         this.title = title;
         this.description = description;
         this.url = url;
         this.urlToImage = urlToImage;
-        this.imageView = imageView;
     }
 
     public String getTitle() {
@@ -36,9 +31,5 @@ public class NewsData {
 
     public String getUrlToImage() {
         return urlToImage;
-    }
-
-    public ImageView getImageView() {
-        return imageView;
     }
 }

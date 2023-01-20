@@ -5,19 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.goonews.dto.NewsData;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
-    private List<NewsData> newsDataList;
+    private final List<NewsData> newsDataList;
 
     public NewsAdapter(List<NewsData> newsDataList) {
         this.newsDataList = newsDataList;
@@ -47,16 +47,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     public static class NewsViewHolder extends RecyclerView.ViewHolder  {
 
-        private TextView title;
-        private TextView description;
-        private ImageView imageView;
-        private LinearLayout parent;
+        private final TextView title;
+        private final TextView description;
+        private final ImageView imageView;
         private String url;
 
 
         public NewsViewHolder(@NonNull View itemView) {
             super(itemView);
-            parent = itemView.findViewById(R.id.parent);
             title = itemView.findViewById(R.id.newsTitle);
             description = itemView.findViewById(R.id.description);
             imageView = itemView.findViewById(R.id.imageView);

@@ -1,19 +1,19 @@
 package com.example.goonews;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.goonews.dto.NewsData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private NewsAdapter newsAdapter;
-    private List<NewsData> newsDataList = new ArrayList<>();
-    private ImageView imageView;
+    private final List<NewsData> newsDataList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
                 null,
                 response -> {
                     recyclerView = findViewById(R.id.recycler_view);
-                    imageView = findViewById(R.id.imageView);
                     newsAdapter = new NewsAdapter(newsDataList);
                     RecyclerView.LayoutManager manager = new GridLayoutManager(
                             getApplicationContext(), 1);
@@ -68,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
                                     object.getString("title"),
                                     object.getString("description"),
                                     object.getString("url"),
-                                    object.getString("urlToImage"),
-                                    imageView
+                                    object.getString("urlToImage")
                             );
                             newsDataList.add(newsData);
                         }
@@ -78,11 +75,7 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 },
-                error -> {
-                    System.err.println(error.getLocalizedMessage());
-                    System.err.println(error);
-                    Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
-                }) {
+                error -> Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show()) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
