@@ -8,12 +8,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.goonews.dto.NewsData;
+import com.example.goonews.dto.NewsArticle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,11 +27,9 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String url = "http://newsapi.org/v2/top-headlines?country=ru&apiKey=e8fda39a6bc44a55b5abb787a641f25a";
-
     private RecyclerView recyclerView;
     private NewsAdapter newsAdapter;
-    private final List<NewsData> newsDataList = new ArrayList<>();
+    private final List<NewsArticle> feedArticles = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,19 +39,38 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide(); // hide title bar
-        setContentView(R.layout.activity_main);
-        newsDataPrepare();
+
+        setContentView(R.layout.activity_main); // always
     }
 
-    private void newsDataPrepare() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        getFeedArticles();
+        setRefreshListener();
+    }
+
+    private void setRefreshListener() {
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(true);
+            getFeedArticles();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+    }
+
+    private void getFeedArticles() {
+        feedArticles.clear();
+
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                url,
+                getString(R.string.URL),
                 null,
                 response -> {
                     recyclerView = findViewById(R.id.recycler_view);
-                    newsAdapter = new NewsAdapter(newsDataList);
+                    newsAdapter = new NewsAdapter(feedArticles);
                     RecyclerView.LayoutManager manager = new GridLayoutManager(
                             getApplicationContext(), 1);
                     recyclerView.setLayoutManager(manager);
@@ -62,13 +80,13 @@ public class MainActivity extends AppCompatActivity {
                         JSONArray jsonArray = response.getJSONArray("articles");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
-                            NewsData newsData = new NewsData(
+                            NewsArticle newsData = new NewsArticle(
                                     object.getString("title"),
                                     object.getString("description"),
                                     object.getString("url"),
                                     object.getString("urlToImage")
                             );
-                            newsDataList.add(newsData);
+                            feedArticles.add(newsData);
                         }
 
                     } catch (JSONException e) {

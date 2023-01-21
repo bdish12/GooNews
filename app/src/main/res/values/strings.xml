@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Сказали и точка</string>
     <string name="feed">Feed</string>
+    <string name="URL">
+        http://newsapi.org/v2/top-headlines?country=ru&amp;apiKey=e8fda39a6bc44a55b5abb787a641f25a
+    </string>
 </resources>

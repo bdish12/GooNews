@@ -10,17 +10,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.goonews.dto.NewsData;
+import com.example.goonews.dto.NewsArticle;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
-    private final List<NewsData> newsDataList;
+    private final List<NewsArticle> newsArticles;
 
-    public NewsAdapter(List<NewsData> newsDataList) {
-        this.newsDataList = newsDataList;
+    public NewsAdapter(List<NewsArticle> newsArticles) {
+        this.newsArticles = newsArticles;
     }
 
     @NonNull
@@ -32,17 +32,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NewsAdapter.NewsViewHolder holder, int position) {
-        NewsData newsData = newsDataList.get(position);
-        holder.title.setText(newsData.getTitle());
-        holder.description.setText(newsData.getDescription());
-        holder.url = newsData.getUrl();
-        Picasso.get().load(newsData.getUrlToImage()).into(holder.imageView);
+    public void onBindViewHolder(@NonNull NewsAdapter.NewsViewHolder newsViewHolder, int position) {
+        NewsArticle newsArticle = newsArticles.get(position);
+        newsViewHolder.title.setText(newsArticle.getTitle());
+        newsViewHolder.description.setText(newsArticle.getDescription());
+        newsViewHolder.url = newsArticle.getUrl();
+        Picasso.get().load(newsArticle.getUrlToImage()).into(newsViewHolder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        return newsDataList.size();
+        return newsArticles.size();
     }
 
     public static class NewsViewHolder extends RecyclerView.ViewHolder  {
@@ -60,6 +60,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             imageView = itemView.findViewById(R.id.imageView);
 
             itemView.setOnClickListener(view -> {
+                // explicit intent
                 Intent intent = new Intent(itemView.getContext(), WebpageActivity.class);
                 intent.putExtra("url", url);
                 itemView.getContext().startActivity(intent);

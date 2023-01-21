@@ -16,7 +16,6 @@ public class WebpageActivity extends AppCompatActivity {
         this.getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getSupportActionBar().hide(); // hide title bar
         setContentView(R.layout.activity_webpage);
 
         WebView webView = findViewById(R.id.webView);
